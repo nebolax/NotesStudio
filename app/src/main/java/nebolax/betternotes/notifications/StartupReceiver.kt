@@ -1,6 +1,8 @@
 package nebolax.betternotes.notifications
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.*
 import android.os.IBinder
 import android.util.Log
@@ -12,7 +14,11 @@ import java.lang.Thread.sleep
 class StartupReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val i = Intent(context, NotifyService::class.java)
-        context?.startService(i)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            context?.startForegroundService(i)
+        } else {
+            context?.startService(i)
+        }
     }
 }
 /*

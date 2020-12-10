@@ -19,5 +19,6 @@ data class DateStruct(
 
 @Serializable
 data class Config(
-    var muchNotifsExist: Int
+    var muchPublished: Int,
+    var id: Int
 )

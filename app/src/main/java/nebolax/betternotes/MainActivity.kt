@@ -3,17 +3,28 @@ package nebolax.betternotes
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.*
+import android.app.PendingIntent
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.storage.StorageManager
+import android.provider.DocumentsContract
+import android.provider.DocumentsProvider
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import events.ServCheck
-import events.emit
+import com.google.android.material.tabs.TabLayout
 import nebolax.betternotes.notifications.NotifiesModerator
 import nebolax.betternotes.notifications.NotifyService
+import java.io.*
+import java.nio.file.FileSystem
 
 
 class MainActivity : AppCompatActivity() {
@@ -94,9 +105,20 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val descriptionText = "no description azazaza"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(NotifiesModerator.chid, "Huh dude you are dude", importance).apply {
-                description = descriptionText
-            }
+            val channel = NotificationChannel(
+                NotifiesModerator.chid,
+                "Huh dude you are dude",
+                importance)
+//            ).apply {
+//                description = descriptionText
+//                enableVibration(true)
+//                vibrationPattern = longArrayOf(500, 500)
+//                setSound(Uri.parse("android.resource://nebolax.betternotes/raw/notify"),
+//                    AudioAttributes.Builder()
+//                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+//                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+//                        .build())
+//            }
             // Register the channel with the system
             val notificationManager: NotificationManager =
                 this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

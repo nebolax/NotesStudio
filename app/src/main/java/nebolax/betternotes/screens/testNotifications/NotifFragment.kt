@@ -2,6 +2,7 @@ package nebolax.betternotes.screens.testNotifications
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import events.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import nebolax.betternotes.AlexLogs
 import nebolax.betternotes.R
 import nebolax.betternotes.databinding.NotifFragmentBinding
 import nebolax.betternotes.notifications.NotifiesModerator
@@ -44,6 +46,14 @@ class NotifFragment: Fragment() {
     private fun mainSetup() {
         binding.pickDate.setOnClickListener { pickDate() }
         binding.pickTime.setOnClickListener { pickTime() }
+        binding.sendLogsBtn.setOnClickListener {
+            val tent = Intent(Intent.ACTION_SEND)
+                .addCategory(Intent.CATEGORY_DEFAULT)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, AlexLogs.getAllLogs())
+            startActivity(tent)
+        }
+        binding.clearLogsBtn.setOnClickListener { AlexLogs.clearAllLogs() }
 
         register<UpdateChoosenDate> { binding.curDate.text = it.date }
         register<UpdateChoosenTime> { binding.curTime.text = it.time }
