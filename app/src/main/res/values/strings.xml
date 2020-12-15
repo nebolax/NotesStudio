@@ -8,4 +8,7 @@
     <string name="clear_current_notifications">Clear current notifications</string>
     <string name="create_notification">Create notification</string>
     <string name="notification_message_hint">Notification message</string>
+    <string name="tag1_text">Work</string>
+    <string name="tag2_text">Hobby</string>
+    <string name="tag3_text">Family</string>
 </resources>

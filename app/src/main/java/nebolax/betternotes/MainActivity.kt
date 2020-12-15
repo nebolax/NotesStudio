@@ -18,8 +18,11 @@ import android.os.storage.StorageManager
 import android.provider.DocumentsContract
 import android.provider.DocumentsProvider
 import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
 import nebolax.betternotes.notifications.NotifiesModerator
 import nebolax.betternotes.notifications.NotifyService
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 .setNegativeButton("No") { _, _ -> }
                 .show()
 
-            prefs!!.edit().putBoolean("firstrun", false).apply();
+            prefs!!.edit().putBoolean("firstrun", false).apply()
         } else {
             Log.i("AlexFOpen", "It's not first run")
         }

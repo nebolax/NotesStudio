@@ -1,17 +1,16 @@
 package nebolax.betternotes.screens.testNotifications
 
 import android.app.Application
-import android.os.Build
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import events.*
 import nebolax.betternotes.notifications.AlexNotification
-import nebolax.betternotes.notifications.DateStruct
+import nebolax.betternotes.notifications.TimeStruct
 import nebolax.betternotes.notifications.NotifiesModerator
 
 class NotifViewModel(private val app: Application) : AndroidViewModel(app) {
     private var message = ""
-    private val dateTime = DateStruct()
+    private val dateTime = TimeStruct()
 
     init {
         register<SetMessage> {

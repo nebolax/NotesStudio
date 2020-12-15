@@ -65,7 +65,7 @@ object NotifiesModerator {
                 var curNotify: AlexNotification? = null
                 notifies.forEach {
                     val calComp = Calendar.getInstance()
-                    calComp.fromDateStruct(it.date)
+                    calComp.fromDateStruct(it.time)
                     if (calComp <= calCur) {
                         callNotify(it.message)
                         curNotify = it
@@ -120,6 +120,6 @@ object NotifiesModerator {
     }
 }
 
-fun Calendar.fromDateStruct(date: DateStruct) {
-    this.set(date.year, date.month, date.day, date.hours, date.minutes)
+fun Calendar.fromDateStruct(time: TimeStruct) {
+    this.set(time.year, time.month, time.day, time.hours, time.minutes)
 }

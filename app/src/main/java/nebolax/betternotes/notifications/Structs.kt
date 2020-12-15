@@ -4,12 +4,12 @@ import kotlinx.serialization.*
 
 @Serializable
 data class AlexNotification(
-    var date: DateStruct,
+    var time: TimeStruct,
     var message: String,
 )
 
 @Serializable
-data class DateStruct(
+data class TimeStruct(
     var year: Int=0,
     var month: Int=0,
     var day: Int=0,

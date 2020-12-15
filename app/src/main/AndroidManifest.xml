@@ -18,7 +18,8 @@
         android:theme="@style/Theme.BetterNotes">
         <activity
             android:name=".MainActivity"
-            android:requestLegacyExternalStorage="true">
+            android:requestLegacyExternalStorage="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
