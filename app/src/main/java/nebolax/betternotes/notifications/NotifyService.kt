@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompatSideChannelService
 import nebolax.betternotes.AlexLogs
 
 
@@ -53,11 +54,6 @@ class NotifyService: Service() {
         AlexLogs.makeLog("Program service has been destroyed")
         Log.i("AlexService", "Destroyed")
 
-    }
-
-    override fun onRebind(intent: Intent?) {
-        super.onRebind(intent)
-        Log.i("AlexService", "Rebinded")
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

@@ -33,23 +33,13 @@ class NotifViewModel(private val app: Application) : AndroidViewModel(app) {
         dateTime.year = year
         dateTime.month = month
         dateTime.day = day
-        var sday = day.toString()
-        if (sday.length == 1) sday = "0$sday"
-        var smonth = (month+1).toString()
-        if (smonth.length == 1) smonth = "0$smonth"
-        val s = "$sday.$smonth.$year"
-        emit(UpdateChoosenDate(s))
+        emit(UpdateChoosenDate(dateTime.dateString()))
     }
 
     fun timePicked(hours: Int, minutes: Int) {
         Log.i("Notifier", "Picked - hours: $hours, minutes: $minutes")
         dateTime.hours = hours
         dateTime.minutes = minutes
-        var shours = hours.toString()
-        if (shours.length == 1) shours = "0$shours"
-        var smins = minutes.toString()
-        if (smins.length == 1) smins = "0$smins"
-        val s = "$shours:$smins"
-        emit(UpdateChoosenTime(s))
+        emit(UpdateChoosenTime(dateTime.timeString()))
     }
 }

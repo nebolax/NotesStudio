@@ -1,18 +1,21 @@
 package nebolax.betternotes.notes
 
 import android.content.Context
+import android.util.Log
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
-class NotesManager(private val context: Context) {
+object NotesManager {
+    private lateinit var context: Context
     private val dirPath = "notes_1.0/"
-    private val dirFile: File
-    private val config: NotesConfig
-    val notesList = mutableListOf<AlexNote>()
+    private lateinit var dirFile: File
+    private lateinit var config: NotesConfig
+    private val notesList = mutableListOf<AlexNote>()
 
-    init {
+    fun setup(context: Context) {
+        this.context = context
         dirFile = File(context.filesDir, dirPath)
         config = loadConfig()
         val dFile = File(context.filesDir, dirPath)
@@ -38,8 +41,7 @@ class NotesManager(private val context: Context) {
     private fun updateConfig() {
         val f = File(dirFile, "config.txt")
         if (f.isFile) {
-            f.delete()
-        }
+            f.delete()        }
         f.writeText(Json.encodeToString(config))
     }
 
@@ -52,12 +54,14 @@ class NotesManager(private val context: Context) {
         f.writeText(Json.encodeToString(note))
     }
 
-    fun loadAllNotes() {
+    fun loadAllNotes(): List<AlexNote> {
+        notesList.clear()
         config.existingNotesIds.forEach {
             val f = File(dirFile, it.toString())
             val note: AlexNote = Json.decodeFromString(f.readText())
             notesList.add(note)
         }
+        return notesList
     }
 
     fun loadNote(id: Int): AlexNote {
@@ -67,17 +71,26 @@ class NotesManager(private val context: Context) {
         res = if (f.exists()) {
             Json.decodeFromString(f.readText())
         } else {
-            createNewNote("Note is unavailable")
+            createNewNote(title = "Note is unavailable")
         }
         return res
     }
 
-    fun createNewNote(text: String = ""): AlexNote {
-        val res = AlexNote(id = config.lastId, body = text)
+    fun createNewNote(text: String = "", title: String = ""): AlexNote {
+        Log.i("clclc", "from man")
+        val res = AlexNote(id = config.lastId, body = text, title = title)
         notesList.add(res)
         config.existingNotesIds.add(config.lastId)
+        saveNote(res)
         config.lastId++
         updateConfig()
         return res
+    }
+
+    fun deleteNote(note: AlexNote) {
+        notesList.remove(note)
+        config.existingNotesIds.remove(note.id)
+        updateConfig()
+        File(dirFile, note.id.toString()).delete()
     }
 }

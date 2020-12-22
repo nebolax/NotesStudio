@@ -10,45 +10,25 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.SET_ALARM"/>
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.BetterNotes">
+        android:theme="@style/Theme.BetterNotes" >
         <activity
             android:name=".MainActivity"
-            android:requestLegacyExternalStorage="true"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
+        <receiver android:name=".NotificationPublisher" />
+        <service android:name=".CustomService"
             android:enabled="true"
-            android:name=".notifications.NotifyService"
-            tools:targetApi="n">
-        </service>
-
-        <receiver
-            android:enabled="true"
-            android:exported="true"
-            android:directBootAware="true"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:label="label"
-            android:name=".notifications.StartupReceiver"
-            tools:targetApi="n">
-
-            <intent-filter>
-                <action android:name="android.intent.action.REBOOT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </receiver>
+            android:exported="false"/>
     </application>
+
 </manifest>

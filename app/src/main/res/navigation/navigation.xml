@@ -13,10 +13,18 @@
         android:id="@+id/editNoteFragment"
         android:name="nebolax.betternotes.screens.editNote.EditNoteFragment"
         android:label="EditNoteFragment"
-        tools:layout="@layout/editnote_fragment" />
+        tools:layout="@layout/editnote_fragment">
+        <argument
+            android:name="note"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/notesObserverFragment"
         android:name="nebolax.betternotes.screens.notesObserver.NotesObserverFragment"
         android:label="NotesObserverFragment"
-        tools:layout="@layout/notes_observer_fragment" />
+        tools:layout="@layout/notes_observer_fragment" >
+        <action
+            android:id="@+id/action_notesObserverFragment_to_editNoteFragment"
+            app:destination="@id/editNoteFragment" />
+    </fragment>
 </navigation>

@@ -7,8 +7,8 @@ import nebolax.betternotes.notifications.TimeStruct
 @Serializable
 data class AlexNote(
     val id: Int,
-    val body: String = "",
-    val title: String = "",
+    var body: String = "",
+    var title: String = "",
     val startTime: TimeStruct = TimeStruct(),
     val endTime: TimeStruct = TimeStruct(),
     val tags: MutableList<AlexTag> = mutableListOf()
