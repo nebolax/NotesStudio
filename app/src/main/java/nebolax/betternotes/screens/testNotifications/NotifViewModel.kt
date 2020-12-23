@@ -32,6 +32,7 @@ class NotifViewModel(private val app: Application) : AndroidViewModel(app)
 
     init {
         _selectedDateTime.value?.add(Calendar.MINUTE, 1)
+        _selectedDateTime.value?.set(Calendar.SECOND, 0)
     }
 
     fun clearNotifies() {

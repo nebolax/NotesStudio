@@ -29,7 +29,7 @@ import java.util.*
 @Serializable
 @Entity(tableName = "pending_notifications_table")
 data class DatabaseNotification(
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey(autoGenerate = false)
         val notifyId: Int = 0,
 
         @ColumnInfo(name = "message")
@@ -39,7 +39,7 @@ data class DatabaseNotification(
         val callTimeMillis: Long = 0
 ) {
         fun toAlexNotification(): AlexNotification {
-                return AlexNotification(message = message, timeToCall = Calendar.getInstance().apply {time = Date(callTimeMillis)})
+                return AlexNotification(message = message, timeToCall = Calendar.getInstance().apply {time = Date(callTimeMillis)}, id = notifyId)
         }
 
         val jsoned: String

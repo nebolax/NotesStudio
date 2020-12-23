@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 import nebolax.betternotes.R
 import nebolax.betternotes.databinding.NotifFragmentBinding
 import nebolax.betternotes.notifications.AlexNotification
+import nebolax.betternotes.notifications.IdMaker
 import nebolax.betternotes.notifications.NotifiesManager
 import nebolax.betternotes.notifications.database.NotifiesDatabase
 import java.util.*
@@ -42,7 +44,7 @@ class NotifFragment: Fragment() {
         )
 
         val notifiesManager = NotifiesManager.getInstance(
-            requireContext().applicationContext,
+            requireActivity(),
             NotifiesDatabase.getInstance(requireContext().applicationContext))
 
         val factory = NotifViewModelFactory(requireNotNull(activity).application)
@@ -58,9 +60,13 @@ class NotifFragment: Fragment() {
             if (it == true) {
                 notifiesManager.addNotification(AlexNotification(
                     message = binding.messageEdit.text.toString(),
-                    timeToCall = viewModel.selectedDateTime.value!!
-                ))
+                    timeToCall = viewModel.selectedDateTime.value!!,
+                    id = IdMaker.getNext()))
                 createdNewNotify()
+                Log.i("timetest", System.currentTimeMillis().toString())
+                Log.i("timetest", SystemClock.elapsedRealtime().toString())
+                Log.i("timetest", viewModel.selectedDateTime.value!!.timeInMillis.toString())
+                Log.i("timetest", "***************")
             }
         }
 
@@ -97,9 +103,9 @@ class NotifFragment: Fragment() {
     }
 
     private fun createdNewNotify() {
-        binding.messageEdit.text.clear()
         binding.addNotification.isEnabled = false
         Snackbar.make(binding.adderLayout, "Added notify: ${binding.messageEdit.text}", Snackbar.LENGTH_SHORT).show()
+        binding.messageEdit.text.clear()
         object : CountDownTimer(3000, 3000) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {

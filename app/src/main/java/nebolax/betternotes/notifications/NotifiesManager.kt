@@ -4,12 +4,14 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.util.Log
 import nebolax.betternotes.notifications.database.NotifiesDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nebolax.betternotes.notifications.database.DatabaseNotification
+import java.lang.Exception
 import java.util.*
 
 class NotifiesManager private constructor(
@@ -30,7 +32,9 @@ class NotifiesManager private constructor(
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        systemAlarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, notify.callTimeMillis, pendingIntent)
+        systemAlarm.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            (notify.callTimeMillis - System.currentTimeMillis()) + SystemClock.elapsedRealtime(),
+            pendingIntent)
         Log.i("AlarmSetter", "set alarm to ${notify.toAlexNotification().timeToCall.get(Calendar.MINUTE)}")
     }
 

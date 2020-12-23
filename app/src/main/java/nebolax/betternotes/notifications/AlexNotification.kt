@@ -6,7 +6,7 @@ import java.util.*
 data class AlexNotification(
     val message: String = "",
     val timeToCall: Calendar = Calendar.getInstance(),
-    val id: Int = 0
+    val id: Int
 ) {
     fun toDatabaseNotify(): DatabaseNotification {
         return DatabaseNotification(notifyId = id, message = message, callTimeMillis = timeToCall.time.time)

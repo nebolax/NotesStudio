@@ -21,7 +21,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [DatabaseNotification::class], version = 1, exportSchema = false)
+@Database(entities = [DatabaseNotification::class], version = 2, exportSchema = false)
 abstract class NotifiesDatabase: RoomDatabase() {
     abstract val dao: NotifiesDatabaseDao
     companion object {
