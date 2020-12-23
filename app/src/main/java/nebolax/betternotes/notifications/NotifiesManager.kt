@@ -29,7 +29,7 @@ class NotifiesManager private constructor(
             context,
             notify.notifyId,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            0
         )
 
         systemAlarm.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -52,7 +52,7 @@ class NotifiesManager private constructor(
             context,
             notifyId,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            0
         )
         systemAlarm.cancel(pendingIntent)
     }

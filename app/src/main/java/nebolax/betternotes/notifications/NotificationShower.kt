@@ -4,12 +4,15 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import nebolax.betternotes.notifications.database.DatabaseNotification
 
 class NotificationShower: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
+        Log.i("aaalarm", "receiver invoked")
+
         val notifyContent = DatabaseNotification.fromJsoned(intent!!.getStringExtra("notify").toString()).toAlexNotification()
 
         val notifyIntent = PendingIntent.getBroadcast(

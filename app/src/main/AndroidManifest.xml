@@ -24,8 +24,8 @@
 
         <receiver
             android:name=".notifications.NotificationShower"
-            android:enabled="true"
-            android:exported="true"/>
+            android:exported="true"
+            android:enabled="true" />
 
         <receiver
             android:enabled="true"

@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/mainActivityFragment"
-        android:name="nebolax.betternotes.screens.testNotifications.NotifFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+<!--    <fragment-->
+<!--        android:id="@+id/mainActivityFragment"-->
+<!--        android:name="nebolax.betternotes.screens.testNotifications.NotifFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
 </merge>
