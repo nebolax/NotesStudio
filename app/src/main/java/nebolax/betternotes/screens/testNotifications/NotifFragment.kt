@@ -2,26 +2,30 @@ package nebolax.betternotes.screens.testNotifications
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import events.*
-import kotlinx.coroutines.GlobalScope
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import nebolax.betternotes.AlexLogs
 import nebolax.betternotes.R
 import nebolax.betternotes.databinding.NotifFragmentBinding
-import nebolax.betternotes.notifications.NotifiesModerator
-import java.lang.Thread.sleep
+import nebolax.betternotes.notifications.AlexNotification
+import nebolax.betternotes.notifications.NotifiesManager
+import nebolax.betternotes.notifications.database.NotifiesDatabase
+import java.util.*
 
 class NotifFragment: Fragment() {
+    private val notifFragmentScope = CoroutineScope(Dispatchers.IO)
     private lateinit var binding: NotifFragmentBinding
     private lateinit var viewModel: NotifViewModel
 
@@ -36,47 +40,84 @@ class NotifFragment: Fragment() {
             container,
             false
         )
-        viewModel = ViewModelProvider(this).get(NotifViewModel::class.java)
+
+        val notifiesManager = NotifiesManager.getInstance(
+            requireContext().applicationContext,
+            NotifiesDatabase.getInstance(requireContext().applicationContext))
+
+        val factory = NotifViewModelFactory(requireNotNull(activity).application)
+        viewModel = ViewModelProvider(this, factory).get(NotifViewModel::class.java)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        mainSetup()
+
+        binding.curDate.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.curTime.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
+        viewModel.createNotifyRequest.observe(viewLifecycleOwner) {
+            if (it == true) {
+                notifiesManager.addNotification(AlexNotification(
+                    message = binding.messageEdit.text.toString(),
+                    timeToCall = viewModel.selectedDateTime.value!!
+                ))
+                createdNewNotify()
+            }
+        }
+
+        viewModel.clearNotifiesRequest.observe(viewLifecycleOwner) {
+            if (it == true) {
+                notifiesManager.deleteAllPending()
+                viewModel.notifiesCleared()
+                clearedNotifies()
+            }
+        }
+
+        viewModel.datePickerRequest.observe(viewLifecycleOwner) {
+                 if(it == true) {
+                     val dialog = DatePickerDialog(requireContext())
+                     dialog.setOnDateSetListener { _, year, month, day ->
+                        viewModel.datePicked(year, month, day)
+                     }
+                     dialog.show()
+                 }
+        }
+
+        viewModel.timePickerRequest.observe(viewLifecycleOwner) {
+            if (it == true) {
+                TimePickerDialog(
+                    requireContext(), { _, hours, minutes ->
+                        viewModel.timePicked(hours, minutes)
+                    }, viewModel.selectedDateTime.value!!.get(Calendar.HOUR_OF_DAY),
+                    viewModel.selectedDateTime.value!!.get(Calendar.MINUTE),
+                    true
+                ).show()
+            }
+        }
         return binding.root
     }
 
-    private fun mainSetup() {
-        binding.pickDate.setOnClickListener { pickDate() }
-        binding.pickTime.setOnClickListener { pickTime() }
-        binding.sendLogsBtn.setOnClickListener {
-            val tent = Intent(Intent.ACTION_SEND)
-                .addCategory(Intent.CATEGORY_DEFAULT)
-                .setType("text/plain")
-                .putExtra(Intent.EXTRA_TEXT, AlexLogs.getAllLogs())
-            startActivity(tent)
-        }
-        binding.clearLogsBtn.setOnClickListener { AlexLogs.clearAllLogs() }
+    private fun createdNewNotify() {
+        binding.messageEdit.text.clear()
+        binding.addNotification.isEnabled = false
+        Snackbar.make(binding.adderLayout, "Added notify: ${binding.messageEdit.text}", Snackbar.LENGTH_SHORT).show()
+        object : CountDownTimer(3000, 3000) {
+            override fun onTick(millisUntilFinished: Long) {}
+            override fun onFinish() {
+                binding.addNotification.isEnabled = true
+            }
 
-        register<UpdateChoosenDate> { binding.curDate.text = it.date }
-        register<UpdateChoosenTime> { binding.curTime.text = it.time }
-        register<NotificationAdded> {
-            Toast.makeText(this.context, "Notification has been created", Toast.LENGTH_SHORT).show()
-        }
-        register<RequestMessage> {
-            emit(SetMessage(binding.messageEdit.text.toString()))
-        }
+        }.start()
     }
 
-    private fun pickTime() {
-        val dialog = TimePickerDialog(this.context, TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
-            viewModel.timePicked(hours, minutes)
-        }, 0, 0, true)
-        dialog.show()
-    }
+    private fun clearedNotifies() {
+        binding.clearNotifications.isEnabled = false
+        Snackbar.make(binding.adderLayout, "All notifies cleared", Snackbar.LENGTH_SHORT).show()
+        object : CountDownTimer(3000, 3000) {
+            override fun onTick(millisUntilFinished: Long) {}
+            override fun onFinish() {
+                binding.clearNotifications.isEnabled = true
+            }
 
-    private fun pickDate() {
-        val dialog = DatePickerDialog(this.requireContext())
-        dialog.setOnDateSetListener { _, year, month, dayOfMonth ->
-            viewModel.datePicked(year, month, dayOfMonth)
-        }
-        dialog.show()
+        }.start()
     }
 }

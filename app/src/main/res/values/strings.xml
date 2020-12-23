@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">BetterNotes</string>
     <string name="pick_date_time"><![CDATA[Pick date & time]]></string>
-    <string name="choose_date">Choose date</string>
-    <string name="pick_date">Pick date</string>
-    <string name="choose_time">Choose time</string>
-    <string name="pick_time">Pick time</string>
-    <string name="clear_current_notifications">Clear current notifications</string>
+    <string name="choose_date">Click to choose date</string>
+    <string name="choose_time">Click to choose time</string>
+    <string name="clear_current_notifications">Clear pending notifications</string>
     <string name="create_notification">Create notification</string>
     <string name="notification_message_hint">Notification message</string>
     <string name="tag1_text">Work</string>
     <string name="tag2_text">Hobby</string>
     <string name="tag3_text">Family</string>
+    <string name="send_logs">Send logs</string>
+    <string name="clear_logs">Clear logs</string>
+    <string name="click_po_pick_time">Click po pick time</string>
+    <string name="click_to_pick_date">Click to pick date</string>
 </resources>

@@ -1,55 +1,71 @@
 package nebolax.betternotes.screens.testNotifications
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import events.*
-import nebolax.betternotes.notifications.AlexNotification
-import nebolax.betternotes.notifications.TimeStruct
-import nebolax.betternotes.notifications.NotifiesModerator
 
-class NotifViewModel(private val app: Application) : AndroidViewModel(app) {
-    private var message = ""
-    private val dateTime = TimeStruct()
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import java.util.*
+
+class NotifViewModel(private val app: Application) : AndroidViewModel(app)
+{
+
+    private val _selectedDateTime: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())
+    val selectedDateTime: LiveData<Calendar>
+        get() = _selectedDateTime
+
+    private val _createNotifyRequest = MutableLiveData(false)
+    val createNotifyRequest: LiveData<Boolean>
+        get() = _createNotifyRequest
+
+    private val _clearNotifiesRequest = MutableLiveData(false)
+    val clearNotifiesRequest: LiveData<Boolean>
+        get() = _clearNotifiesRequest
+
+    private val _datePickerRequest = MutableLiveData(false)
+    val datePickerRequest: LiveData<Boolean>
+        get() = _datePickerRequest
+
+    private val _timePickerRequest = MutableLiveData(false)
+    val timePickerRequest: LiveData<Boolean>
+        get() = _timePickerRequest
 
     init {
-        register<SetMessage> {
-            message = it.message
-        }
+        _selectedDateTime.value?.add(Calendar.MINUTE, 1)
     }
 
     fun clearNotifies() {
-        NotifiesModerator.removeAllNotify()
+        _clearNotifiesRequest.value = true
     }
 
     fun addNotification() {
-        emit(RequestMessage())
-        NotifiesModerator.addNotify(AlexNotification(dateTime, message))
-        emit(NotificationAdded())
+        _createNotifyRequest.value = true
+    }
+
+    fun pickDate() {
+        _datePickerRequest.value = true
+    }
+
+    fun pickTime() {
+        _timePickerRequest.value = true
+    }
+
+    fun notifiesCleared() {
+        _clearNotifiesRequest.value = false
     }
 
     fun datePicked(year: Int, month: Int, day: Int) {
-        Log.i("Notifier", "Picked - year: $year, month: $month, day: $day")
-        dateTime.year = year
-        dateTime.month = month
-        dateTime.day = day
-        var sday = day.toString()
-        if (sday.length == 1) sday = "0$sday"
-        var smonth = (month+1).toString()
-        if (smonth.length == 1) smonth = "0$smonth"
-        val s = "$sday.$smonth.$year"
-        emit(UpdateChoosenDate(s))
+        val newcal = selectedDateTime.value!!.clone() as Calendar
+        newcal.set(Calendar.YEAR, year)
+        newcal.set(Calendar.MONTH, month)
+        newcal.set(Calendar.DAY_OF_MONTH, day)
+        _selectedDateTime.value = newcal
     }
 
     fun timePicked(hours: Int, minutes: Int) {
-        Log.i("Notifier", "Picked - hours: $hours, minutes: $minutes")
-        dateTime.hours = hours
-        dateTime.minutes = minutes
-        var shours = hours.toString()
-        if (shours.length == 1) shours = "0$shours"
-        var smins = minutes.toString()
-        if (smins.length == 1) smins = "0$smins"
-        val s = "$shours:$smins"
-        emit(UpdateChoosenTime(s))
+        val newcal = selectedDateTime.value!!.clone() as Calendar
+        newcal.set(Calendar.HOUR_OF_DAY, hours)
+        newcal.set(Calendar.MINUTE, minutes)
+        _selectedDateTime.value = newcal
     }
 }
