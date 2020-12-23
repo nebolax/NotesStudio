@@ -27,6 +27,10 @@
             android:exported="true"
             android:enabled="true" />
 
+        <receiver android:name=".NotificationPublisher"
+            android:enabled="true"
+            android:exported="true"/>
+
         <receiver
             android:enabled="true"
             android:exported="true"
