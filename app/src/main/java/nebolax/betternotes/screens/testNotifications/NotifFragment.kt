@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -43,6 +44,9 @@ class NotifFragment: Fragment() {
             false
         )
 
+        val idMaker = IdMaker.getInstance(requireActivity().getSharedPreferences("nebolax.betternotes",
+            AppCompatActivity.MODE_PRIVATE))
+
         val notifiesManager = NotifiesManager.getInstance(
             requireActivity(),
             NotifiesDatabase.getInstance(requireContext().applicationContext))
@@ -61,7 +65,7 @@ class NotifFragment: Fragment() {
                 notifiesManager.addNotification(AlexNotification(
                     message = binding.messageEdit.text.toString(),
                     timeToCall = viewModel.selectedDateTime.value!!,
-                    id = IdMaker.getNext()))
+                    id = idMaker.getNext()))
                 createdNewNotify()
                 Log.i("timetest", System.currentTimeMillis().toString())
                 Log.i("timetest", SystemClock.elapsedRealtime().toString())

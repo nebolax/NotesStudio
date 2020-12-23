@@ -38,7 +38,7 @@ class NotifiesManager private constructor(
         Log.i("AlarmSetter", "set alarm to ${notify.toAlexNotification().timeToCall.get(Calendar.MINUTE)}")
     }
 
-    fun loadAllNotifies() {
+    fun setupAllNotifies() {
         notifiesManagerScope.launch {
             val stored = database.dao.getAllNotifies()
             stored.forEach { setAlarm(it) }
@@ -86,6 +86,10 @@ class NotifiesManager private constructor(
                 instance = NotifiesManager(context, database)
             }
             return instance!!
+        }
+
+        fun greet(context: Context) {
+            context.startService(Intent(context, SimpleService::class.java))
         }
     }
 }

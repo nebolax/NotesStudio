@@ -1,8 +1,25 @@
 package nebolax.betternotes.notifications
 
-object IdMaker {
-    private var cur: Int = Int.MIN_VALUE
+import android.content.SharedPreferences
+
+class IdMaker private constructor(val prefs: SharedPreferences) {
+    private var current = prefs.getInt("AlexNotifiesIdentificator", Int.MIN_VALUE)
+
     fun getNext(): Int {
-        return cur++
+        current++
+        prefs.edit().putInt("AlexNotifiesIdentificator", current).apply()
+        return current
+    }
+
+    companion object {
+        private var isCreated = false
+        private lateinit var instance: IdMaker
+        fun getInstance(prefs: SharedPreferences): IdMaker {
+                if (!isCreated) {
+                    instance = IdMaker(prefs)
+                    isCreated = true
+                }
+            return instance
+        }
     }
 }
