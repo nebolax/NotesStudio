@@ -95,11 +95,6 @@ class MainActivity : Activity() {
 
 class NotificationPublisher : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            context.startForegroundService(Intent(context, CustomService::class.java))
-        } else {
-            context.startService(Intent(context, CustomService::class.java))
-        }
         Log.i("sttas", "received")
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -119,23 +114,5 @@ class NotificationPublisher : BroadcastReceiver() {
     companion object {
         var NOTIFICATION_ID = "notification-id"
         var NOTIFICATION = "notification"
-    }
-}
-
-class CustomService: Service() {
-    override fun onBind(intent: Intent?): IBinder? {
-        Log.i("sservice", "binded")
-        return Binder()
-    }
-
-    override fun sendBroadcast(intent: Intent?) {
-        super.sendBroadcast(intent)
-        Log.i("sservice", "dfjnfe")
-    }
-
-
-
-    override fun onCreate() {
-        Log.i("sservice", "created")
     }
 }

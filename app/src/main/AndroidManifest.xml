@@ -27,9 +27,6 @@
         </activity>
         <receiver android:name=".NotificationPublisher"
             android:exported="true"/>
-        <service android:name=".CustomService"
-            android:enabled="true"
-            android:exported="true"/>
     </application>
 
 </manifest>
