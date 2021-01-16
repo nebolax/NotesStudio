@@ -5,12 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import events.NavigateToEditor
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import nebolax.betternotes.R
