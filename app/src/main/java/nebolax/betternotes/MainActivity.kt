@@ -19,7 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import nebolax.betternotes.notifications.NotificationShower
 import nebolax.betternotes.notifications.NotifiesManager
-
+import nebolax.betternotes.notes.NotesManager
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,26 +37,10 @@ class MainActivity : AppCompatActivity() {
             mChannel.enableVibration(true)
             mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
             mChannel.setShowBadge(false)
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(mChannel)
+            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+                mChannel
+            )
         }
-
-        val systemAlarm: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val intent = Intent(this, ToastReceiver::class.java)
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        systemAlarm.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 5000, 60000, pendingIntent)
-    }
-}
-
-class ToastReceiver: BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
+        NotesManager.setup(applicationContext)
     }
 }
