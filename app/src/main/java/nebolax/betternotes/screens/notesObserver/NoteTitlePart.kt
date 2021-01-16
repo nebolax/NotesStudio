@@ -4,20 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginBottom
-import androidx.core.view.setPadding
-import events.NavigateToEditor
-import events.RemoveNote
-import events.emit
 import nebolax.betternotes.R
 import nebolax.betternotes.notes.AlexNote
 import nebolax.betternotes.notes.NotesManager
-import org.w3c.dom.Text
 import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility", "SetTextI18n")

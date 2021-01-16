@@ -2,7 +2,6 @@ package nebolax.betternotes.notes
 
 import android.view.View
 import kotlinx.serialization.Serializable
-import nebolax.betternotes.notifications.TimeStruct
 
 @Serializable
 data class AlexNote(
@@ -25,3 +24,6 @@ data class NotesConfig(
     var lastId: Int = 0,
     val existingNotesIds: MutableList<Int> = mutableListOf()
 )
+
+@Serializable
+data class TimeStruct
