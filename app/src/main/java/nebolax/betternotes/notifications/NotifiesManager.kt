@@ -29,7 +29,7 @@ class NotifiesManager private constructor(
             context,
             notify.notifyId,
             intent,
-            0
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         systemAlarm.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -52,7 +52,7 @@ class NotifiesManager private constructor(
             context,
             notifyId,
             intent,
-            0
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
         systemAlarm.cancel(pendingIntent)
     }
@@ -89,7 +89,11 @@ class NotifiesManager private constructor(
         }
 
         fun greet(context: Context) {
-            context.startService(Intent(context, SimpleService::class.java))
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, SimpleService::class.java))
+            } else {
+                context.startService(Intent(context, SimpleService::class.java))
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.*
 
-class NotifViewModel(private val app: Application) : AndroidViewModel(app)
+class NotifViewModel(app: Application) : AndroidViewModel(app)
 {
 
     private val _selectedDateTime: MutableLiveData<Calendar> = MutableLiveData(Calendar.getInstance())

@@ -11,7 +11,6 @@ import nebolax.betternotes.notifications.database.NotifiesDatabase
 class StartupReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         NotifiesManager.greet(context!!)
-        Log.i("loooading", "receiver called")
         Toast.makeText(context, "Succ loaded", Toast.LENGTH_LONG).show()
         val alexManager = NotifiesManager.getInstance(context, NotifiesDatabase.getInstance(context))
         alexManager.setupAllNotifies()
