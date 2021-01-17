@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="nebolax.betternotes.screens.editNote.EditNoteViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,10 +31,10 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/dateStartView"
+            android:id="@+id/date_start_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="date start"
+            android:text="start time"
             android:textColor="@color/time_color"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/titleText"
@@ -39,11 +45,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="date finish"
+            android:text="end time"
             android:textColor="@color/time_color"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/dateStartView"
-            app:layout_constraintTop_toBottomOf="@+id/dateStartView" />
+            app:layout_constraintStart_toStartOf="@+id/date_start_view"
+            app:layout_constraintTop_toBottomOf="@+id/date_start_view" />
 
         <EditText
             android:id="@+id/mainText"

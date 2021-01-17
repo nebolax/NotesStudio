@@ -48,14 +48,14 @@ class NoteTitlePart(
             box.addView(this)
             setTextColor(ContextCompat.getColor(context, R.color.time_color))
             textSize = 19f
-            text = "Start: ${note.startTime.allString()}"
+            text = "Start: ${note.startTime.allString}"
         }
 
         timeFinishView = TextView(context).apply {
             box.addView(this)
             setTextColor(ContextCompat.getColor(context, R.color.time_color))
             textSize = 19f
-            text = "End: ${note.endTime.allString()}"
+            text = "End: ${note.endTime.allString}"
         }
 
         box.setOnTouchListener { _, event ->
@@ -75,10 +75,5 @@ class NoteTitlePart(
             }
             true
         }
-//        box.setOnClickListener {
-//            Log.i("ffrom", "clclc")
-//            parentLayout.removeAllViews()
-//            parent.navigate()
-//        }
     }
 }

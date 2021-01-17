@@ -1,25 +1,19 @@
 package nebolax.betternotes
 
-import android.annotation.SuppressLint
-import android.app.AlarmManager
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
+import android.content.ComponentName
+import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
-import android.util.IntProperty
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import nebolax.betternotes.notifications.NotificationShower
-import nebolax.betternotes.notifications.NotifiesManager
 import nebolax.betternotes.notes.NotesManager
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,5 +36,71 @@ class MainActivity : AppCompatActivity() {
             )
         }
         NotesManager.setup(applicationContext)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val prefs = getSharedPreferences("nebolax.betternotes", MODE_PRIVATE)
+        if (prefs.getBoolean("isFirstRun", true)) {
+            requestAutostart()
+            prefs.edit().putBoolean("isFirstRun", false).apply()
+        }
+    }
+
+    private fun requestAutostart() {
+        val manufacturer = Build.MANUFACTURER
+        val manufRequest = arrayOf("xiaomi", "Xiaomi", "oppo", "Oppo", "vivo", "Vivo", "letv", "Letv", "honor", "Honor", "meizu", "Meizu")
+        if (manufacturer in manufRequest) {
+            AlertDialog.Builder(this)
+                .setTitle("Allow autostart")
+                .setMessage("Please allow autostart for better experience with notifications")
+                .setPositiveButton("Yes") { _, _ ->
+                    try {
+                        var intent = Intent()
+                        if ("xiaomi".equals(manufacturer, ignoreCase = true)) {
+                            intent.component = ComponentName(
+                                "com.miui.securitycenter",
+                                "com.miui.permcenter.autostart.AutoStartManagementActivity"
+                            )
+                        } else if ("oppo".equals(manufacturer, ignoreCase = true)) {
+                            intent.component = ComponentName(
+                                "com.coloros.safecenter",
+                                "com.coloros.safecenter.permission.startup.StartupAppListActivity"
+                            )
+                        } else if ("vivo".equals(manufacturer, ignoreCase = true)) {
+                            intent.component = ComponentName(
+                                "com.vivo.permissionmanager",
+                                "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"
+                            )
+                        } else if ("Letv".equals(manufacturer, ignoreCase = true)) {
+                            intent.component = ComponentName(
+                                "com.letv.android.letvsafe",
+                                "com.letv.android.letvsafe.AutobootManageActivity"
+                            )
+                        } else if ("Honor".equals(manufacturer, ignoreCase = true)) {
+                            intent.component = ComponentName(
+                                "com.huawei.systemmanager",
+                                "com.huawei.systemmanager.optimize.process.ProtectActivity"
+                            )
+                        } else if ("meizu".equals(manufacturer, ignoreCase = true)) {
+                            intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
+                            intent.addCategory(Intent.CATEGORY_DEFAULT)
+                            intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+                        }
+                        val list =
+                            packageManager.queryIntentActivities(
+                                intent,
+                                PackageManager.MATCH_DEFAULT_ONLY
+                            )
+                        if (list.size > 0) {
+                            startActivity(intent)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                .setNegativeButton("No") { _, _ -> }
+                .show()
+        }
     }
 }

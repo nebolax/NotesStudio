@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nebolax.betternotes.notifications.database.DatabaseNotification
-import java.lang.Exception
 import java.util.*
 
 class NotifiesManager private constructor(
@@ -58,9 +57,17 @@ class NotifiesManager private constructor(
     }
 
     fun addNotification(notify: AlexNotification) {
-        notifiesManagerScope.launch {
-            database.dao.insert(notify.toDatabaseNotify())
-            setAlarm(notify.toDatabaseNotify())
+        if (notify.timeToCall > Calendar.getInstance()) {
+            Log.i("AlexNDebug", "added")
+            notifiesManagerScope.launch {
+                if (notify.id in database.dao.getAllNotifies().map { it.notifyId }) {
+                    database.dao.update(notify.toDatabaseNotify())
+                    cancelAlarm(notify.id)
+                } else {
+                    database.dao.insert(notify.toDatabaseNotify())
+                }
+                setAlarm(notify.toDatabaseNotify())
+            }
         }
     }
 

@@ -8,7 +8,7 @@ import java.util.*
 @SuppressLint("SetTextI18n")
 @BindingAdapter("date")
 fun TextView.setDate(calendar: Calendar?) {
-    calendar?.let {
+    calendar!!.let {
         val year = calendar.get(Calendar.YEAR).toString()
         val monthBuf = (calendar.get(Calendar.MONTH)+1).toString()
         val month =
@@ -32,7 +32,7 @@ fun TextView.setDate(calendar: Calendar?) {
 @SuppressLint("SetTextI18n")
 @BindingAdapter("time")
 fun TextView.setTime(calendar: Calendar?) {
-    calendar?.let {
+    calendar!!.let {
         val hoursBuf = calendar.get(Calendar.HOUR_OF_DAY).toString()
         val hours =
             if (hoursBuf.length == 2) {

@@ -20,7 +20,7 @@ import nebolax.betternotes.notifications.database.NotifiesDatabase
 
 class NotificationShower: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "broaddedcast", Toast.LENGTH_LONG).show()
+       // Toast.makeText(context, "broaddedcast", Toast.LENGTH_LONG).show()
        // context!!.startService(Intent(context, SimpleService::class.java))
 
         Log.i("aaalarm", "receiver invoked")

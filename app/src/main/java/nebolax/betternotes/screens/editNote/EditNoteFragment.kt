@@ -1,6 +1,8 @@
 package nebolax.betternotes.screens.editNote
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,16 +15,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import nebolax.betternotes.R
 import nebolax.betternotes.databinding.EditnoteFragmentBinding
 import nebolax.betternotes.notes.AlexNote
 import nebolax.betternotes.notes.NotesManager
+import nebolax.betternotes.screens.testNotifications.NotifViewModel
+import nebolax.betternotes.screens.testNotifications.NotifViewModelFactory
+import java.util.*
 
 class EditNoteFragment: Fragment() {
     private lateinit var binding: EditnoteFragmentBinding
+    private lateinit var viewModel: EditNoteViewModel
     private lateinit var curNote: AlexNote
+
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,6 +44,23 @@ class EditNoteFragment: Fragment() {
             container,
             false
         )
+        curNote = Json.decodeFromString(requireArguments().getString("note").toString())
+
+        Log.i("AlexNoteStatus", curNote.toString())
+
+        val factory = EditNoteViewModelFactory(requireNotNull(activity).application, curNote)
+        viewModel = ViewModelProvider(this, factory).get(EditNoteViewModel::class.java)
+
+        viewModel.curStartTime.observe(viewLifecycleOwner) {
+            Log.i("AlexAdapters", "New start: $it")
+            binding.dateStartView.text = "Start: ${it.allString}"
+        }
+        viewModel.curEndTime.observe(viewLifecycleOwner) {
+            Log.i("AlexAdapters", "New end: $it")
+            binding.dateEndView.text = "End: ${it.allString}"
+        }
+
+        binding.viewModel = viewModel
         binding.mainText.addTextChangedListener {
             curNote.body = binding.mainText.text.toString()
             NotesManager.saveNote(curNote) }
@@ -41,10 +68,11 @@ class EditNoteFragment: Fragment() {
             curNote.title = binding.titleText.text.toString()
             NotesManager.saveNote(curNote) }
 
-        //binding.mainText.clipBounds = Rect(0, 0, 200, 200)
+        binding.dateStartView.setOnClickListener { setNewDateTime(TimeType.Start) }
+        binding.dateEndView.setOnClickListener { setNewDateTime(TimeType.End) }
+
         binding.mainText.outlineProvider = ViewOutlineProvider.BACKGROUND
         binding.mainText.clipToOutline = true
-       // binding.mainText.
         return binding.root
     }
 
@@ -59,15 +87,28 @@ class EditNoteFragment: Fragment() {
             newTag.background = ContextCompat.getDrawable(requireContext(), getTagColor(i+1))
             newTag.text = resources.getString(getTagText(i+1))
         }
-        curNote = Json.decodeFromString(requireArguments().getString("note").toString())
         Log.i("ffrom", curNote.title)
         binding.titleText.setText(curNote.title)
         binding.mainText.setText(curNote.body)
-        binding.dateStartView.setText("Start: ${curNote.startTime.allString()}")
-        binding.dateEndView.setText("End: ${curNote.endTime.allString()}")
     }
 
-    fun getTagColor(id: Int): Int {
+    private fun setNewDateTime(type: TimeType) {
+        val dialog = DatePickerDialog(requireContext())
+        val curCal = if (type == TimeType.Start) viewModel.curStartTime
+                    else viewModel.curEndTime
+        dialog.setOnDateSetListener { _, year, month, day ->
+            TimePickerDialog(
+                requireContext(), { _, hours, minutes ->
+                    viewModel.dateAndTimePicked(type, year, month, day, hours, minutes)
+                }, curCal.value!!.hours,
+                curCal.value!!.minutes,
+                true
+            ).show()
+        }
+        dialog.show()
+    }
+
+    private fun getTagColor(id: Int): Int {
         when (id) {
             1 -> return R.drawable.tag1_bg
             2 -> return R.drawable.tag2_bg
@@ -76,28 +117,12 @@ class EditNoteFragment: Fragment() {
         return R.drawable.tag1_bg
     }
 
-    fun getTagText(id: Int): Int {
+    private fun getTagText(id: Int): Int {
         when (id) {
             1 -> return R.string.tag1_text
             2 -> return R.string.tag2_text
             3 -> return R.string.tag3_text
         }
         return R.string.tag1_text
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("status", "destroyed view 2")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.i("status", "detached 2")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("status", "destroyed 2")
     }
 }
