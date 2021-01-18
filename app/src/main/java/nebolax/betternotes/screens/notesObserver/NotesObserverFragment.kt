@@ -37,7 +37,7 @@ class NotesObserverFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val notes = NotesManager.loadAllNotes()
+        val notes = NotesManager.loadAllNotes().reversed()
         Log.i("llll", notes.size.toString())
         notes.forEach {
             NoteTitlePart(requireContext(), binding.notesHandler, it, this)
@@ -55,23 +55,7 @@ class NotesObserverFragment : Fragment() {
 
     private fun createNewNote() {
         Log.i("clclc", "creating")
-        val newNote = NotesManager.createNewNote(title = "Empty note")
+        val newNote = NotesManager.createNewNote()
         val ff = NoteTitlePart(requireContext(), binding.notesHandler, newNote, this)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("status", "destroyed view")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.i("status", "detached")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("status", "destroyed")
     }
 }

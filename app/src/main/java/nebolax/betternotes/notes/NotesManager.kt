@@ -104,6 +104,10 @@ object NotesManager {
     }
 
     fun deleteNote(note: AlexNote) {
+        val notifiesManager = NotifiesManager.getInstance(context, NotifiesDatabase.getInstance(context))
+        notifiesManager.deleteNotification(note.startNotifyId)
+        notifiesManager.deleteNotification(note.endNotifyId)
+
         notesList.remove(note)
         config.existingNotesIds.remove(note.id)
         updateConfig()

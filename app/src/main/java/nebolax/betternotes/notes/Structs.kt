@@ -15,6 +15,8 @@ data class AlexNote(
     var startTime: TimeStruct = TimeStruct(),
     var endTime: TimeStruct = TimeStruct(),
     val tags: MutableList<AlexTag> = mutableListOf(),
+    var startTimeSet: Boolean = false,
+    var endTimeSet: Boolean = false
 )
 
 @Serializable

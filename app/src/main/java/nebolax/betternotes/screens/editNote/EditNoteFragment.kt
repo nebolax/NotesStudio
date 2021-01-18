@@ -53,11 +53,19 @@ class EditNoteFragment: Fragment() {
 
         viewModel.curStartTime.observe(viewLifecycleOwner) {
             Log.i("AlexAdapters", "New start: $it")
-            binding.dateStartView.text = "Start: ${it.allString}"
+            if (viewModel.note.startTimeSet) {
+                binding.dateStartView.text = "Start: ${it.allString}"
+            } else {
+                binding.dateStartView.text = "Start time isn't set"
+            }
         }
         viewModel.curEndTime.observe(viewLifecycleOwner) {
             Log.i("AlexAdapters", "New end: $it")
-            binding.dateEndView.text = "End: ${it.allString}"
+            if (viewModel.note.endTimeSet) {
+                binding.dateEndView.text = "End: ${it.allString}"
+            } else {
+                binding.dateEndView.text = "End time isn't set"
+            }
         }
 
         binding.viewModel = viewModel
@@ -78,15 +86,15 @@ class EditNoteFragment: Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        for(i in 0 until 3) {
-            val newTag = TextView(context)
-            binding.tagsLayout.addView(newTag)
-            newTag.setTextColor(ContextCompat.getColor(requireContext(), R.color.editor_background))
-            newTag.setPadding(5, 1, 5, 1)
-            (newTag.layoutParams as LinearLayout.LayoutParams).bottomMargin = 5
-            newTag.background = ContextCompat.getDrawable(requireContext(), getTagColor(i+1))
-            newTag.text = resources.getString(getTagText(i+1))
-        }
+//        for(i in 0 until 3) {
+//            val newTag = TextView(context)
+//            binding.tagsLayout.addView(newTag)
+//            newTag.setTextColor(ContextCompat.getColor(requireContext(), R.color.editor_background))
+//            newTag.setPadding(5, 1, 5, 1)
+//            (newTag.layoutParams as LinearLayout.LayoutParams).bottomMargin = 5
+//            newTag.background = ContextCompat.getDrawable(requireContext(), getTagColor(i+1))
+//            newTag.text = resources.getString(getTagText(i+1))
+//        }
         Log.i("ffrom", curNote.title)
         binding.titleText.setText(curNote.title)
         binding.mainText.setText(curNote.body)

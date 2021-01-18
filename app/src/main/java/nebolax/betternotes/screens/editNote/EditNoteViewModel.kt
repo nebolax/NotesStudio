@@ -11,7 +11,7 @@ import nebolax.betternotes.notes.TimeStruct
 
 class EditNoteViewModel(
     app: Application,
-    private val note: AlexNote): AndroidViewModel(app) {
+    val note: AlexNote): AndroidViewModel(app) {
     private val _curStartTime = MutableLiveData<TimeStruct>()
     val curStartTime: LiveData<TimeStruct>
         get() = _curStartTime
@@ -32,10 +32,12 @@ class EditNoteViewModel(
         )
         when (type) {
              TimeType.Start -> {
+                 note.startTimeSet = true
                  _curStartTime.value = newcal
                  note.startTime = newcal
              }
             else -> {
+                note.endTimeSet = true
                 _curEndTime.value = newcal
                 note.endTime = newcal
             }

@@ -3,6 +3,7 @@
 <!--    Base interface colors -->
     <color name="editor_background">#3E3D42</color>
     <color name="note_title">#FFD54F</color>
+    <color name="empty_note_title">#AAFFD54F</color>
     <color name="text_body">#26C6DA</color>
     <color name="text_on_title">#00ACC1</color>
     <color name="time_color">#D4E157</color>

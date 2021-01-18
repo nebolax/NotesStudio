@@ -34,9 +34,10 @@
             android:id="@+id/date_start_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="start time"
             android:textColor="@color/time_color"
-            android:textSize="16sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="@+id/titleText"
             app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
@@ -44,10 +45,10 @@
             android:id="@+id/date_end_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="end time"
             android:textColor="@color/time_color"
-            android:textSize="16sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="@+id/date_start_view"
             app:layout_constraintTop_toBottomOf="@+id/date_start_view" />
 
@@ -56,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:ems="10"
@@ -78,6 +79,8 @@
             android:hint="Title"
             android:importantForAutofill="no"
             android:inputType="textCapCharacters"
+            android:textAlignment="center"
+            android:textSize="26sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,6 +89,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/tagsLayout"
             app:layout_constraintTop_toBottomOf="@+id/tagsLayout"
             app:srcCompat="@drawable/plus_tag" />
