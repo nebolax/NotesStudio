@@ -39,10 +39,7 @@ class NotesObserverFragment : Fragment() {
         Log.i("status", "created")
         binding.newNoteBtn.setOnClickListener {
             Log.i("clclc", "clicked")
-            createNewNote() }
-
-        binding.testBtn.setOnClickListener {
-            binding.scrollView.scrollTo(0, GlobalVars.lastYScroll)
+            createNewNote()
         }
 
         return binding.root
