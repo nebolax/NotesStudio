@@ -19,6 +19,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        NotesManager.setup(applicationContext)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val prefs = getSharedPreferences("nebolax.betternotes", MODE_PRIVATE)
+        if (prefs.getBoolean("isFirstRun", true)) {
+            regChannel()
+            requestAutostart()
+            prefs.edit().putBoolean("isFirstRun", false).apply()
+        }
+    }
+
+    private fun regChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "main_channel"
             val name = "main_channel"
@@ -29,21 +43,11 @@ class MainActivity : AppCompatActivity() {
             mChannel.enableLights(true)
             mChannel.lightColor = Color.RED
             mChannel.enableVibration(true)
-            mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+            mChannel.vibrationPattern = longArrayOf(500, 500, 500, 500, 500)
             mChannel.setShowBadge(false)
             (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
                 mChannel
             )
-        }
-        NotesManager.setup(applicationContext)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val prefs = getSharedPreferences("nebolax.betternotes", MODE_PRIVATE)
-        if (prefs.getBoolean("isFirstRun", true)) {
-            requestAutostart()
-            prefs.edit().putBoolean("isFirstRun", false).apply()
         }
     }
 

@@ -43,7 +43,7 @@ class NotificationShower: BroadcastReceiver() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             builder
                 .setSound(Uri.parse("android.resource://" + context.packageName + "/" + R.raw.notify))
-                .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+                .setVibrate(longArrayOf(500, 500, 500, 500, 500))
         }
 
         NotificationManagerCompat.from(context).notify(notifyContent.id, builder.build())
