@@ -94,5 +94,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tagsLayout"
             app:srcCompat="@drawable/plus_tag" />
 
+        <ImageView
+            android:id="@+id/delete_note_ineditor_btn"
+            android:layout_width="42dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="delete note"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/trash_box"
+            app:tint="#B11010" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

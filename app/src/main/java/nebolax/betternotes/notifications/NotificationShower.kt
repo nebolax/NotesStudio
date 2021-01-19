@@ -20,9 +20,6 @@ import nebolax.betternotes.notifications.database.NotifiesDatabase
 
 class NotificationShower: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-       // Toast.makeText(context, "broaddedcast", Toast.LENGTH_LONG).show()
-       // context!!.startService(Intent(context, SimpleService::class.java))
-
         Log.i("aaalarm", "receiver invoked")
 
         val notifyContent = DatabaseNotification.fromJsoned(intent!!.getStringExtra("notify").toString()).toAlexNotification()
@@ -33,12 +30,15 @@ class NotificationShower: BroadcastReceiver() {
             Intent(),
             PendingIntent.FLAG_UPDATE_CURRENT)
 
+        var title = notifyContent.message
+        if (title.isEmpty()) title = "Note without title"
+
         val builder = NotificationCompat.Builder(context!!, "main_channel")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(notifyIntent)
             .setChannelId("main_channel")
             .setContentTitle("Incoming notification!")
-            .setContentText(notifyContent.message)
+            .setContentText(title)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             builder
@@ -48,7 +48,5 @@ class NotificationShower: BroadcastReceiver() {
 
         NotificationManagerCompat.from(context).notify(notifyContent.id, builder.build())
         NotifiesManager.getInstance(context, NotifiesDatabase.getInstance(context)).deleteNotification(notifyContent.id)
-
-       // context.stopService(Intent(context, SimpleService::class.java))
     }
 }

@@ -1,6 +1,7 @@
 package nebolax.betternotes.screens.editNote
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import nebolax.betternotes.R
@@ -68,6 +70,18 @@ class EditNoteFragment: Fragment() {
             }
         }
 
+        binding.deleteNoteIneditorBtn.setOnClickListener {
+            AlertDialog.Builder(context)
+                .setTitle("Are you sure?")
+                .setMessage("Are you sure you want to delete note \"${viewModel.note.title}\"?")
+                .setPositiveButton("Yes") { _, _ ->
+                    NotesManager.deleteNote(viewModel.note)
+                    findNavController().navigateUp()
+                }
+                .setNegativeButton("No") { _, _ -> }
+                .show()
+        }
+
         binding.viewModel = viewModel
         binding.mainText.addTextChangedListener {
             curNote.body = binding.mainText.text.toString()
@@ -86,15 +100,6 @@ class EditNoteFragment: Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        for(i in 0 until 3) {
-//            val newTag = TextView(context)
-//            binding.tagsLayout.addView(newTag)
-//            newTag.setTextColor(ContextCompat.getColor(requireContext(), R.color.editor_background))
-//            newTag.setPadding(5, 1, 5, 1)
-//            (newTag.layoutParams as LinearLayout.LayoutParams).bottomMargin = 5
-//            newTag.background = ContextCompat.getDrawable(requireContext(), getTagColor(i+1))
-//            newTag.text = resources.getString(getTagText(i+1))
-//        }
         Log.i("ffrom", curNote.title)
         binding.titleText.setText(curNote.title)
         binding.mainText.setText(curNote.body)
