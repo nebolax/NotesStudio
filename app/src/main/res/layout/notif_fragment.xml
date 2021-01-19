@@ -13,6 +13,7 @@
         android:id="@+id/adderLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#2C2B2E"
         android:clickable="true"
         android:focusable="true">
 
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> viewModel.pickTime()}"
             android:text="@string/click_po_pick_time"
             android:textColor="#AED581"
@@ -56,8 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/curDate"
-            app:time="@{viewModel.selectedDateTime}"
-            android:focusable="true" />
+            app:time="@{viewModel.selectedDateTime}" />
 
         <Button
             android:id="@+id/clearNotifications"
@@ -117,5 +118,6 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/clearNotifications"
             app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

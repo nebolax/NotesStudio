@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
-import android.util.Log
 import nebolax.betternotes.notifications.database.NotifiesDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +33,6 @@ class NotifiesManager private constructor(
         systemAlarm.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
             (notify.callTimeMillis - System.currentTimeMillis()) + SystemClock.elapsedRealtime(),
             pendingIntent)
-        Log.i("AlarmSetter", "set alarm to ${notify.toAlexNotification().timeToCall.get(Calendar.MINUTE)}")
     }
 
     fun setupAllNotifies() {
@@ -45,7 +43,6 @@ class NotifiesManager private constructor(
     }
 
     private fun cancelAlarm(notifyId: Int) {
-        Log.i("aaalarms", "canceling alarm: $notifyId")
         val intent = Intent(context, NotificationShower::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -58,7 +55,6 @@ class NotifiesManager private constructor(
 
     fun addNotification(notify: AlexNotification) {
         if (notify.timeToCall > Calendar.getInstance()) {
-            Log.i("AlexNDebug", "added")
             notifiesManagerScope.launch {
                 if (notify.id in database.dao.getAllNotifies().map { it.notifyId }) {
                     database.dao.update(notify.toDatabaseNotify())

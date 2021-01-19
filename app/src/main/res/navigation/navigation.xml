@@ -26,5 +26,8 @@
         <action
             android:id="@+id/action_notesObserverFragment_to_editNoteFragment"
             app:destination="@id/editNoteFragment" />
+        <action
+            android:id="@+id/action_notesObserverFragment_to_notifFragment2"
+            app:destination="@id/notifFragment2" />
     </fragment>
 </navigation>

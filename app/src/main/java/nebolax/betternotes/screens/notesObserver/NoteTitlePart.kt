@@ -1,32 +1,16 @@
 package nebolax.betternotes.screens.notesObserver
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ClickableSpan
-import android.text.style.UnderlineSpan
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
-import android.widget.TextView
-import androidx.core.app.DialogCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginRight
-import kotlinx.android.synthetic.main.editnote_fragment.view.*
 import kotlinx.android.synthetic.main.note_title.view.*
-import nebolax.betternotes.GlobalVars
 import nebolax.betternotes.R
 import nebolax.betternotes.notes.AlexNote
 import nebolax.betternotes.notes.NotesManager
-import kotlin.math.abs
-
 
 @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
 @Suppress("JoinDeclarationAndAssignment")
@@ -77,7 +61,6 @@ class NoteTitlePart(
         }
 
         nhm.date_lin_layout.setOnClickListener {
-            Log.i("AlexClickk", "navreq")
             parent.navigate(note)
         }
 

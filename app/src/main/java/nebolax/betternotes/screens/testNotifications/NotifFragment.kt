@@ -5,8 +5,6 @@ import android.app.TimePickerDialog
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import nebolax.betternotes.R
 import nebolax.betternotes.databinding.NotifFragmentBinding
 import nebolax.betternotes.notifications.AlexNotification
@@ -67,10 +63,6 @@ class NotifFragment: Fragment() {
                     timeToCall = viewModel.selectedDateTime.value!!,
                     id = idMaker.getNext()))
                 createdNewNotify()
-                Log.i("timetest", System.currentTimeMillis().toString())
-                Log.i("timetest", SystemClock.elapsedRealtime().toString())
-                Log.i("timetest", viewModel.selectedDateTime.value!!.timeInMillis.toString())
-                Log.i("timetest", "***************")
             }
         }
 

@@ -1,11 +1,9 @@
 package nebolax.betternotes
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ComponentName
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color

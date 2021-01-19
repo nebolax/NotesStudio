@@ -1,8 +1,6 @@
 package nebolax.betternotes.screens.notesObserver
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,10 +34,12 @@ class NotesObserverFragment : Fragment() {
             container,
             false
         )
-        Log.i("status", "created")
         binding.newNoteBtn.setOnClickListener {
-            Log.i("clclc", "clicked")
             createNewNote()
+        }
+
+        binding.singleNotifyTest.setOnClickListener {
+            findNavController().navigate(R.id.action_notesObserverFragment_to_notifFragment2)
         }
 
         return binding.root
@@ -47,8 +47,6 @@ class NotesObserverFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val notes = NotesManager.loadAllNotes()
-        Log.i("llll", notes.size.toString())
-
         notes.forEach {
             NoteTitlePart(requireContext(), binding.notesHandler, binding.scrollView, it, this)
         }
@@ -70,7 +68,6 @@ class NotesObserverFragment : Fragment() {
     }
 
     fun navigate(note: AlexNote) {
-        Log.i("AlexState", binding.scrollView.scrollY.toString())
         GlobalVars.lastYScroll = binding.scrollView.scrollY
         onSaveInstanceState(bundleOf("scrollView" to binding.scrollView.scrollY))
         binding.notesHandler.removeAllViews()
@@ -82,9 +79,8 @@ class NotesObserverFragment : Fragment() {
 
 
     private fun createNewNote() {
-        Log.i("clclc", "creating")
         val newNote = NotesManager.createNewNote()
-        val ff = NoteTitlePart(
+        NoteTitlePart(
             requireContext(),
             binding.notesHandler,
             binding.scrollView,

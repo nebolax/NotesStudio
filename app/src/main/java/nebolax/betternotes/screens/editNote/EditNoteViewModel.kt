@@ -1,7 +1,6 @@
 package nebolax.betternotes.screens.editNote
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,7 +42,6 @@ class EditNoteViewModel(
             }
         }
         NotesManager.saveNote(note)
-        Log.i("AlexAdapters", "Set new calendar")
     }
 }
 
